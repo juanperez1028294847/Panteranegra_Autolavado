@@ -5,7 +5,10 @@
 package Marca_Auto;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import pantera_negra.ConnectionManager;
 
@@ -34,7 +37,7 @@ public class Ventana extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblMarcaAuto = new javax.swing.JLabel();
         txtMarca_Auto = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         txtServicio = new javax.swing.JTextField();
@@ -43,13 +46,16 @@ public class Ventana extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         txtCliente = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
+        btnSeleccion = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 2, 24)); // NOI18N
         jLabel1.setText("Bienvendos a Las Configuraciones");
 
-        jLabel2.setText("Marca de Auto");
+        lblMarcaAuto.setText("Marca de Auto");
 
         txtMarca_Auto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -70,6 +76,27 @@ public class Ventana extends javax.swing.JFrame {
             }
         });
 
+        btnSeleccion.setText("Seleccion");
+        btnSeleccion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionActionPerformed(evt);
+            }
+        });
+
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
+        btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -82,18 +109,24 @@ public class Ventana extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblMarcaAuto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnGuardar)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnGuardar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSeleccion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDelete)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnUpdate))
                     .addComponent(txtTrabajador, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtMarca_Auto, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -102,7 +135,7 @@ public class Ventana extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                    .addComponent(lblMarcaAuto)
                     .addComponent(txtMarca_Auto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -117,7 +150,11 @@ public class Ventana extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(35, 35, 35)
-                .addComponent(btnGuardar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGuardar)
+                    .addComponent(btnSeleccion)
+                    .addComponent(btnDelete)
+                    .addComponent(btnUpdate))
                 .addContainerGap(41, Short.MAX_VALUE))
         );
 
@@ -132,35 +169,138 @@ public class Ventana extends javax.swing.JFrame {
         // TODO add your handling code here:
   ConnectionManager con = new ConnectionManager();
 
-String sql = "INSERT INTO pantera_negra.configuraciones "
-           + "(Marca_de_Auto, Costo_de_Servicio, Nombre_Trabajador, Nombre_Cliente) "
-           + "VALUES (?, ?, ?, ?)";
+    String sql = "INSERT INTO configuraciones "
+               + "(Marca_de_Auto, Costo_de_Servicio, Nombre_Trabajador, Nombre_Cliente) "
+               + "VALUES (?, ?, ?, ?)";
 
-String Marca = txtMarca_Auto.getText();
-String Servicio = txtServicio.getText();
-String Trabajador = txtTrabajador.getText();
-String Cliente = txtCliente.getText();
+    String marca = txtMarca_Auto.getText();
+    String costo = txtServicio.getText();
+    String trabajador = txtTrabajador.getText();
+    String cliente = txtCliente.getText();
+
+    try {
+        PreparedStatement st = con.connect().prepareStatement(sql);
+        st.setString(1, marca);
+        st.setString(2, costo);
+        st.setString(3, trabajador);
+        st.setString(4, cliente);
+
+        st.execute();
+        System.out.println("Registro guardado exitosamente.");
+
+    } catch(SQLException e) {
+        System.out.println("CATCH INSERT!");
+        e.printStackTrace();
+    } finally {
+        con.disconnect();
+    }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnSeleccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionActionPerformed
+        // TODO add your handling code here
+ConnectionManager con = new ConnectionManager();
+
+String Marca_de_Auto = txtMarca_Auto.getText();
+
+// Consulta con TODAS las columnas reales
+String sql = "SELECT Marca_de_Auto, Costo_de_Servicio, Nombre_Trabajador, Nombre_Cliente "
+           + "FROM configuraciones WHERE Marca_de_Auto = ?";
+
+try {
+    PreparedStatement pst = con.connect().prepareStatement(sql);
+    pst.setString(1, Marca_de_Auto);
+
+    ResultSet rs = pst.executeQuery();
+
+    if (rs.next()) {
+
+        // LLENADO AUTOMÁTICO DE TODOS LOS TXT
+        txtMarca_Auto.setText(rs.getString("Marca_de_Auto"));
+        txtServicio.setText(rs.getString("Costo_de_Servicio"));
+        txtTrabajador.setText(rs.getString("Nombre_Trabajador"));
+        txtCliente.setText(rs.getString("Nombre_Cliente"));
+        
+        System.out.println("Datos cargados correctamente.");
+    } else {
+        System.out.println("No existe esa marca en la BD.");
+    }
+
+} catch (SQLException e) {
+    System.out.println("CATCH!");
+    e.printStackTrace();
+
+} finally {
+    con.disconnect();
+}
+
+    }//GEN-LAST:event_btnSeleccionActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+       ConnectionManager con = new ConnectionManager();
+       String sql = "DELETE FROM configuraciones WHERE Marca_de_Auto = ?";
+       
+       String Marca_de_Auto = txtMarca_Auto.getText();
+
+try {
+    PreparedStatement st = con.connect().prepareStatement(sql);
+    st.setString(1, Marca_de_Auto);
+
+    int rows = st.executeUpdate(); // ← ESTE MÉTODO DICE CUÁNTAS FILAS BORRÓ
+
+    if(rows > 0){
+        System.out.println("Registro eliminado correctamente.");
+        JOptionPane.showMessageDialog(null, "Registro eliminado correctamente");
+
+        // OPCIONAL: limpiar campos
+        txtMarca_Auto.setText("");
+        txtServicio.setText("");
+        txtTrabajador.setText("");
+        txtCliente.setText("");
+
+    } else {
+        JOptionPane.showMessageDialog(null, "No existe esa marca en la base de datos.");
+        System.out.println("No existe esa marca.");
+    }
+
+} catch(SQLException e){
+    System.out.println("CATCH DELETE!");
+    e.printStackTrace();
+} finally {
+    con.disconnect();
+}
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+       ConnectionManager con = new ConnectionManager();
+
+String sql = "UPDATE configuraciones SET Costo_de_Servicio=?,Nombre_Trabajador=?, Nombre_Cliente=? WHERE Marca_de_Auto=? ;";
+
+String marca = txtMarca_Auto.getText();
+String costo = txtServicio.getText();
+String trabajador = txtTrabajador.getText();
+String cliente = txtCliente.getText();
 
 try {
     PreparedStatement st = con.connect().prepareStatement(sql);
 
-    st.setString(1, Marca);
-    st.setDouble(2, Double.parseDouble(Servicio));
-    st.setString(3, Trabajador);
-    st.setString(4, Cliente);
+    st.setString(1, costo);
+    st.setString(2, trabajador);
+    st.setString(3, cliente);
+    st.setString(4, marca);   // <-- WHERE
 
-    st.executeUpdate();
+    st.execute();
+    System.out.println("Registro actualizado correctamente.");
 
-    JOptionPane.showMessageDialog(null, "Registro guardado correctamente");
-
-} catch (SQLException e) {
-    JOptionPane.showMessageDialog(null, "ERROR SQL: " + e.getMessage());
-} catch (NumberFormatException e) {
-    JOptionPane.showMessageDialog(null, "Servicio debe ser numérico");
+} catch(SQLException e) {
+    System.out.println("ERROR EN UPDATE!");
+    e.printStackTrace();
 } finally {
     con.disconnect();
 }
-    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -188,12 +328,15 @@ try {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnSeleccion;
+    private javax.swing.JButton btnUpdate;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel lblMarcaAuto;
     private javax.swing.JTextField txtCliente;
     private javax.swing.JTextField txtMarca_Auto;
     private javax.swing.JTextField txtServicio;
